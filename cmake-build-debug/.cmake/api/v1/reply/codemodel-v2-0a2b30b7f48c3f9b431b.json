@@ -1,0 +1,78 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.24"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "eksamenSoftwareV2024",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "eksamenSoftwareV2024::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-eksamenSoftwareV2024-Debug-e10a794a2ed75e7d5822.json",
+					"name" : "eksamenSoftwareV2024",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "sqlite3::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-sqlite3-Debug-f5acaeab5bd6fba9d285.json",
+					"name" : "sqlite3",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "sqlitecpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-sqlitecpp-Debug-87c129b86dd8b82c9cb1.json",
+					"name" : "sqlitecpp",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/amand/ikt103g23v/assignments/eksamenSoftwareV2024/cmake-build-debug",
+		"source" : "C:/Users/amand/ikt103g23v/assignments/eksamenSoftwareV2024"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 4
+	}
+}
