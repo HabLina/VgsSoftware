@@ -2,8 +2,8 @@
 // Created by LinaH on 29.01.2024.
 //
 
-#ifndef EKSAMEN_SOFTWARE_VÅR_2024_CUSTOMER_H
-#define EKSAMEN_SOFTWARE_VÅR_2024_CUSTOMER_H
+#ifndef EKSAMEN_SOFTWARE_V_2024_CUSTOMER_H
+#define EKSAMEN_SOFTWARE_V_2024_CUSTOMER_H
 #include "string"
 
 class Customer{
@@ -51,4 +51,4 @@ public:
     int getLicenseNumber();
 };
 
-#endif //EKSAMEN_SOFTWARE_VÅR_2024_CUSTOMER_H
+#endif //EKSAMEN_SOFTWARE_V_2024_CUSTOMER_H

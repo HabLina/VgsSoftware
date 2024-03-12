@@ -26,5 +26,8 @@ target_include_directories(sqlitecpp PUBLIC sqlitecpp/include)
 target_link_libraries(sqlitecpp sqlite3)
 
 # Program executable
-add_executable(eksamenSoftwareV2024 main.cpp)
+add_executable(eksamenSoftwareV2024 main.cpp
+        controllers/car.cpp
+        controllers/customer.cpp
+        controllers/customer.cpp)
 target_link_libraries(eksamenSoftwareV2024 sqlite3 sqlitecpp) #her skal vi definere alle mappene vi skal bruke etterhvert

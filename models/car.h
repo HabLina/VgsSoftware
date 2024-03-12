@@ -2,8 +2,8 @@
 // Created by amand on 2/27/2024.
 //
 
-#ifndef EKSAMEN_SOFTWARE_VÅR_2024_CAR_H
-#define EKSAMEN_SOFTWARE_VÅR_2024_CAR_H
+#ifndef EKSAMEN_SOFTWARE_V_2024_CAR_H
+#define EKSAMEN_SOFTWARE_V_2024_CAR_H
 //
 // Created by LinaH on 18.05.2023.
 //
@@ -55,4 +55,4 @@ public:
 };
 
 
-#endif //EKSAMEN_SOFTWARE_VÅR_2024_CAR_H
+#endif //EKSAMEN_SOFTWARE_V_2024_CAR_H
