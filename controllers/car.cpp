@@ -2,6 +2,8 @@
 // Created by LinaH on 18.05.2023.
 //
 
+#include <utility>
+
 #include "../Models/Car.h"
 
 Car::Car(int id, std::string model, std::string brand, std::string color, std::string licensePlate, std::string fuelType,
@@ -10,7 +12,7 @@ Car::Car(int id, std::string model, std::string brand, std::string color, std::s
     this->model = std::move(model);
     this->brand = std::move(brand);
     this->color = std::move(color);
-    this->licensePlate = licensePlate;
+    this->licensePlate = std::move(licensePlate);
     this->fuelType = std::move(fuelType);
     this->transmission = std::move(transmission);
     this->availability = availability;
@@ -29,7 +31,7 @@ void Car::setColor(std::string newColor){
 }
 
 void Car::setLicensePlate(std::string newLicensePlate){
-    this->licensePlate = newLicensePlate;
+    this->licensePlate = std::move(newLicensePlate);
 }
 
 void Car::setFuelType(std::string newFuelType){
