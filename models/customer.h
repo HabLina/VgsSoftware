@@ -12,13 +12,13 @@ private:
     std::string firstName;
     std::string lastName;
     std::string address;
-    int ssn;
+    long long ssn;
     int phoneNumber;
     std::string email;
-    int licenseNumber;
+    long long licenseNumber;
 public:
-    Customer(int id, std::string firstName, std::string lastName, std::string address, int ssn, int phoneNumber,
-             std::string email, int licenseNumber);
+    Customer(int id, std::string firstName, std::string lastName, std::string address, long long ssn, int phoneNumber,
+             std::string email, long long licenseNumber);
 
     void setFirstName(std::string firstName);
 
@@ -26,13 +26,13 @@ public:
 
     void setAddress(std::string address);
 
-    int setSsn(int ssn);
+    long long setSsn(long long ssn);
 
     int setPhoneNumber(int phoneNumber);
 
     void setEmail(std::string email);
 
-    int setLicenseNumber(int licenseNumber);
+    long long setLicenseNumber(long long licenseNumber);
 
     int getId() const;
 
@@ -42,13 +42,13 @@ public:
 
     std::string getAddress();
 
-    int getSsn();
+    long long getSsn();
 
     int getPhoneNumber();
 
     std::string getEmail();
 
-    int getLicenseNumber();
+    long long getLicenseNumber();
 };
 
 #endif //EKSAMEN_SOFTWARE_V_2024_CUSTOMER_H
