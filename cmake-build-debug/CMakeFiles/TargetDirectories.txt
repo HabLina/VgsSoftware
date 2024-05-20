@@ -1,5 +1,0 @@
-C:/Users/LinaH/VgsSoftware/VgsSoftware/cmake-build-debug/CMakeFiles/sqlite3.dir
-C:/Users/LinaH/VgsSoftware/VgsSoftware/cmake-build-debug/CMakeFiles/sqlitecpp.dir
-C:/Users/LinaH/VgsSoftware/VgsSoftware/cmake-build-debug/CMakeFiles/eksamenSoftwareV2024.dir
-C:/Users/LinaH/VgsSoftware/VgsSoftware/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/LinaH/VgsSoftware/VgsSoftware/cmake-build-debug/CMakeFiles/rebuild_cache.dir
