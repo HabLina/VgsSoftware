@@ -3,7 +3,7 @@ project(eksamenSoftwareV2024)
 
 set(CMAKE_CXX_STANDARD 17)
 
-#sQLite Library
+#SQLite Library
 add_library(sqlite3 sqlite3/sqlite3.c)
 target_include_directories(sqlite3 PUBLIC sqlite3)
 

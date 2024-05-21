@@ -2,7 +2,7 @@
 // Created by LinaH on 29.01.2024.
 //
 
-#include "../Models/Customer.h"
+#include "../Models/customer.h"
 
 Customer::Customer(int id, std::string firstName, std::string lastName, std::string address, long long ssn, int phoneNumber,
                    std::string email, long long licenseNumber){

@@ -1,6 +1,0 @@
-cmake-build-debug
-sqlite3ext.h
-shell.c
-
-CMakeLists.txt
-.idea
