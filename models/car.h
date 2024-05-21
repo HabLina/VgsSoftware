@@ -18,10 +18,11 @@ private:
     std::string licensePlate;
     std::string fuelType;
     std::string transmission;
+    std::string carRegistration;
     int availability = true;
 public:
     Car(int id, std::string model, std::string brand, std::string color, std::string licensePlate, std::string fuelType,
-        std::string transmission, int availability);
+        std::string transmission, std::string carRegistration, int availability);
 
     void setModel(std::string model);
 
@@ -34,6 +35,8 @@ public:
     void setFuelType(std::string fuelType);
 
     void setTransmission(std::string transmission);
+
+    void setCarRegistration(std::string newCarRegistration);
 
     int setAvailability(int availability);
 
@@ -50,6 +53,8 @@ public:
     std::string getFuelType();
 
     std::string getTransmission();
+
+    std::string getCarRegistration();
 
     std::string getAvailability();
 };
