@@ -2,10 +2,10 @@
 // Created by LinaH on 29.01.2024.
 //
 
-#include "../Models/customer.h"
+#include "../Models/Customer.h"
 
-Customer::Customer(int id, std::string firstName, std::string lastName, std::string address, long long ssn, int phoneNumber,
-                   std::string email, long long licenseNumber){
+Customer::Customer(int id, std::string firstName, std::string lastName, std::string address, int ssn, int phoneNumber,
+                   std::string email, int licenseNumber){
     this->id = id;
     this->firstName = std::move(firstName);
     this->lastName = std::move(lastName);
@@ -28,7 +28,7 @@ void Customer::setAddress(std::string newAddress){
     this->address = std::move(newAddress);
 }
 
-long long Customer::setSsn(long long newSsn){
+int Customer::setSsn(int newSsn){
     this->ssn = newSsn;
     return 0;
 }
@@ -42,7 +42,7 @@ void Customer::setEmail(std::string newEmail) {
     this->email = std::move(newEmail);
 }
 
-long long Customer::setLicenseNumber(long long newLicenseNumber) {
+int Customer::setLicenseNumber(int newLicenseNumber) {
     this->licenseNumber = newLicenseNumber;
     return 0;
 }
@@ -63,7 +63,7 @@ std::string Customer::getAddress() {
     return this->address;
 }
 
-long long Customer::getSsn(){
+int Customer::getSsn(){
     return this->ssn;
 }
 
@@ -75,6 +75,6 @@ std::string Customer::getEmail() {
     return this->email;
 }
 
-long long Customer::getLicenseNumber() {
+int Customer::getLicenseNumber() {
     return this->licenseNumber;
 }

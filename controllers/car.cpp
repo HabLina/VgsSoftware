@@ -2,20 +2,17 @@
 // Created by LinaH on 18.05.2023.
 //
 
-#include <utility>
-
-#include "../Models/car.h"
+#include "../Models/Car.h"
 
 Car::Car(int id, std::string model, std::string brand, std::string color, std::string licensePlate, std::string fuelType,
-         std::string transmission, std::string carRegistration, int availability){
+         std::string transmission, int availability){
     this->id = id;
     this->model = std::move(model);
     this->brand = std::move(brand);
     this->color = std::move(color);
-    this->licensePlate = std::move(licensePlate);
+    this->licensePlate = licensePlate;
     this->fuelType = std::move(fuelType);
     this->transmission = std::move(transmission);
-    this->carRegistration = std::move(carRegistration);
     this->availability = availability;
 }
 
@@ -32,7 +29,7 @@ void Car::setColor(std::string newColor){
 }
 
 void Car::setLicensePlate(std::string newLicensePlate){
-    this->licensePlate = std::move(newLicensePlate);
+    this->licensePlate = newLicensePlate;
 }
 
 void Car::setFuelType(std::string newFuelType){
@@ -43,8 +40,9 @@ void Car::setTransmission(std::string newTransmission) {
     this->transmission = std::move(newTransmission);
 }
 
-void Car::setCarRegistration(std::string newCarRegistration) {
-    this->carRegistration = std::move(newCarRegistration);
+int Car::setAvailability(int newAvailability) {
+    this->availability = newAvailability;
+    return 0;
 }
 
 int Car::getId() const{
@@ -73,10 +71,6 @@ std::string Car::getFuelType() {
 
 std::string Car::getTransmission() {
     return this->transmission;
-}
-
-std::string Car::getCarRegistration() {
-    return this->carRegistration;
 }
 
 std::string Car::getAvailability() {

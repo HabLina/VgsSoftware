@@ -2,467 +2,251 @@
 #include <string>
 #include <vector>
 #include <limits>
-#include <algorithm>
-#include <sqlite3.h>
-#include <SQLiteCpp/SQLiteCpp.h>
-#include <cstdio>
 #include "Models/Car.h"
 #include "Models/Customer.h"
 
+std::vector<Car*> cars;
+std::vector<Customer*> customers;
+int nextIdCar = 1;
 int numberOfCars = 0;
 
+int nextIdCustomer = 1;
 int numberOfCustomers = 0;
 
 //Car functions
 void addCar() {
-    //Increment the number of cars
     numberOfCars++;
+    int id;
+    std::string model;
+    std::string brand;
+    std::string color;
+    std::string fuelType;
+    std::string transmission;
+    int availability = true;
+    std::string licensePlate;
 
-    // Open a database file
-    SQLite::Database db("identifier.sqlite", SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
+    //Increase id
+    id = nextIdCar;
+    nextIdCar ++;
+    nextIdCar = nextIdCar;
 
-    std::string model, brand, color, fuelType, transmission, licensePlate, carRegistration;
-
-    //Get input information from the user
-    std::cout << "Enter car brand: ";
+    std::cout << "Enter car brand:";
     std::getline(std::cin, brand);
-    std::transform(brand.begin(), brand.end(), brand.begin(),
-                   [](unsigned char c) { return std::tolower(c); });
 
-    std::cout << "Enter car model: ";
+    std::cout << "Enter car model:";
     std::getline(std::cin, model);
-    std::transform(model.begin(), model.end(), model.begin(),
-                   [](unsigned char c) { return std::tolower(c); });
 
-    std::cout << "Enter car color: ";
+    std::cout << "Enter car color:";
     std::getline(std::cin, color);
-    std::transform(color.begin(), color.end(), color.begin(),
-                   [](unsigned char c) { return std::tolower(c); });
 
-    std::cout << "Enter car fuel type: ";
+    std::cout << "Enter car fuel type:";
     std::getline(std::cin, fuelType);
-    std::transform(fuelType.begin(), fuelType.end(), fuelType.begin(),
-                   [](unsigned char c) { return std::tolower(c); });
 
-    std::cout << "Enter car transmission: ";
+    std::cout << "Enter car transmission:";
     std::getline(std::cin, transmission);
-    std::transform(transmission.begin(), transmission.end(), transmission.begin(),
-                   [](unsigned char c) { return std::tolower(c); });
 
-    std::cout << "Enter license plate number: ";
+    std::cout << "Enter car registration number:";
     std::getline(std::cin, licensePlate);
-    std::transform(licensePlate.begin(), licensePlate.end(), licensePlate.begin(),
-                   [](unsigned char c) { return std::tolower(c); });
 
-    std::cout << "Enter car registration number: ";
-    std::getline(std::cin, carRegistration);
-    std::transform(carRegistration.begin(), carRegistration.end(), carRegistration.begin(),
-                   [](unsigned char c) { return std::tolower(c); });
-
-    try{
-        // Prepare an SQL statement
-        SQLite::Statement query(db, "INSERT INTO CARS (Model, Brand, Color, FuelType, Transmission, Availability, LicensePlate, CarRegistration) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-
-        // Bind values to the statement
-        query.bind(1, model);
-        query.bind(2, brand);
-        query.bind(3, color);
-        query.bind(4, fuelType);
-        query.bind(5, transmission);
-        query.bind(6, true);
-        query.bind(7, licensePlate);
-        query.bind(8, carRegistration);
-
-        // Execute the statement
-        query.exec();
-        std::cout << "Car inserted successfully.\n";
-    } catch (const std::exception& e) {
-        std::cerr << "Failed to insert car: " << e.what() << std::endl;
-    }
+    auto* car = new Car(id, model, brand, color, licensePlate, fuelType, transmission, availability);
+    cars.push_back(car);
 }
 
 void editCar(int id){
-    SQLite::Database db("identifier.sqlite", SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
+    for (auto car : cars) {
+        if (car->getId() == id) {
+            std::string model;
+            std::string brand;
+            std::string color;
+            std::string licensePlate;
+            std::string fuelType;
+            std::string transmission;
 
-    bool continueEditing = true;
-    while (continueEditing) {
-        std::string model, brand, color, licensePlate,
-        fuelType, transmission, carRegistration, repeat, thingToEdit;
-
-        std::cout << "What do you want to edit? (brand, model, color, license plate, car registration, fuel type, transmission): ";
-        std::getline(std::cin, thingToEdit);
-
-        //turn thingsToEdit to lowercase to remove case sensitivity
-        std::transform(thingToEdit.begin(), thingToEdit.end(), thingToEdit.begin(),
-                       [](unsigned char c) { return std::tolower(c); });
-
-        if (thingToEdit == "brand") {
             std::cout << "Enter new car brand: ";
             std::getline(std::cin, brand);
 
-            std::transform(brand.begin(), brand.end(), brand.begin(),
-                           [](unsigned char c) { return std::tolower(c); });
-
-            SQLite::Statement query(db, "UPDATE cars SET Brand = ? WHERE ID = ?");
-            query.bind(1, brand);
-            query.bind(2, id);
-
-            // Execute the statement
-            query.exec();
-            std::cout << "Brand edited successfully.\n";
-        } else if (thingToEdit == "model") {
             std::cout << "Enter new car model: ";
             std::getline(std::cin, model);
 
-            std::transform(model.begin(), model.end(), model.begin(),
-                           [](unsigned char c) { return std::tolower(c); });
-
-            SQLite::Statement query(db, "UPDATE cars SET Model = ? WHERE ID = ?");
-            query.bind(1, model);
-            query.bind(2, id);
-
-            // Execute the statement
-            query.exec();
-            std::cout << "Model edited successfully.\n";
-        } else if (thingToEdit == "color") {
             std::cout << "Enter new car color: ";
             std::getline(std::cin, color);
 
-            std::transform(color.begin(), color.end(), color.begin(),
-                           [](unsigned char c) { return std::tolower(c); });
-
-            SQLite::Statement query(db, "UPDATE cars SET Color = ? WHERE ID = ?");
-            query.bind(1, color);
-            query.bind(2, id);
-
-            // Execute the statement
-            query.exec();
-            std::cout << "Color edited successfully.\n";
-        } else if (thingToEdit == "license plate") {
             std::cout << "Enter new car license plate number: ";
             std::getline(std::cin, licensePlate);
 
-            std::transform(licensePlate.begin(), licensePlate.end(), licensePlate.begin(),
-                           [](unsigned char c) { return std::tolower(c); });
-
-            SQLite::Statement query(db, "UPDATE cars SET LicensePlate = ? WHERE ID = ?");
-            query.bind(1, licensePlate);
-            query.bind(2, id);
-
-            // Execute the statement
-            query.exec();
-            std::cout << "License plate edited successfully.\n";
-        } else if (thingToEdit == "car registration") {
-            std::cout << "Enter new car registration number: ";
-            std::getline(std::cin, carRegistration);
-
-            std::transform(carRegistration.begin(), carRegistration.end(), carRegistration.begin(),
-                           [](unsigned char c) { return std::tolower(c); });
-
-            SQLite::Statement query(db, "UPDATE cars SET CarRegistration = ? WHERE ID = ?");
-            query.bind(1, carRegistration);
-            query.bind(2, id);
-
-            // Execute the statement
-            query.exec();
-            std::cout << "Car registration number edited successfully.\n";
-        } else if (thingToEdit == "fuel type") {
             std::cout << "Enter new car fuel type: ";
             std::getline(std::cin, fuelType);
 
-            std::transform(fuelType.begin(), fuelType.end(), fuelType.begin(),
-                           [](unsigned char c) { return std::tolower(c); });
-
-            SQLite::Statement query(db, "UPDATE cars SET FuelType = ? WHERE ID = ?");
-            query.bind(1, fuelType);
-            query.bind(2, id);
-
-            // Execute the statement
-            query.exec();
-            std::cout << "Fuel type edited successfully.\n";
-        } else if (thingToEdit == "transmission") {
             std::cout << "Enter new car transmission: ";
             std::getline(std::cin, transmission);
 
-            std::transform(transmission.begin(), transmission.end(), transmission.begin(),
-                           [](unsigned char c) { return std::tolower(c); });
-
-            SQLite::Statement query(db, "UPDATE cars SET Transmission = ? WHERE ID = ?");
-            query.bind(1, transmission);
-            query.bind(2, id);
-
-            // Execute the statement
-            query.exec();
-            std::cout << "Car transmission edited successfully.\n";
-        } else {
-            std::cout << "Invalid input; please enter one of the previously listed options: ";
+            car->setModel(model);
+            car->setBrand(brand);
+            car->setColor(color);
+            car->setLicensePlate(licensePlate);
+            car->setFuelType(fuelType);
+            car->setTransmission(transmission);
+            break;
         }
-
-        std::cout << "Do you want to edit something else? (yes/no): ";
-        std::getline(std::cin, repeat);
-
-        std::transform(repeat.begin(), repeat.end(), repeat.begin(),
-                       [](unsigned char c) { return std::tolower(c); });
-
-        continueEditing = (repeat == "yes");
     }
 }
 
 void removeCar(int id){
-    SQLite::Database db("identifier.sqlite", SQLite::OPEN_READWRITE);
-
-    SQLite::Statement query(db, "DELETE FROM cars WHERE ID = ?");
-    query.bind(1, id);
-    query.exec();
+    for (auto it = cars.begin(); it != cars.end(); ++it) {
+        Car* car = *it;
+        if (car->getId() == id) {
+            cars.erase(it);
+            break;
+        }
+    }
 }
 
-//Customer functions
 void addCustomer() {
     numberOfCustomers++;
-
-    // Open a database file
-    SQLite::Database db("identifier.sqlite", SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
-
-    std::string firstName, lastName, address, email;
+    int id;
+    std::string firstName;
+    std::string lastName;
+    std::string address;
+    std::string email;
+    int ssn;
     int phoneNumber;
-    long long ssn, licenseNumber;
+    int licenseNumber;
 
-    //Get input information from the user
-    std::cout << "Enter customer first name: ";
+    //Increase id
+    id = nextIdCustomer;
+    nextIdCustomer ++;
+    nextIdCustomer = nextIdCustomer;
+
+    std::cout << "Enter customer first name:";
     std::getline(std::cin, firstName);
-    std::transform(firstName.begin(), firstName.end(), firstName.begin(),
-                   [](unsigned char c) { return std::tolower(c); });
 
-
-    std::cout << "Enter customer last name: ";
+    std::cout << "Enter customer last name:";
     std::getline(std::cin, lastName);
-    std::transform(lastName.begin(), lastName.end(), lastName.begin(),
-                   [](unsigned char c) { return std::tolower(c); });
 
-
-    std::cout << "Enter customer address: ";
+    std::cout << "Enter customer address:";
     std::getline(std::cin, address);
-    std::transform(address.begin(), address.end(), address.begin(),
-                   [](unsigned char c) { return std::tolower(c); });
 
-
-    std::cout << "Enter customer email: ";
+    std::cout << "Enter customer email:";
     std::getline(std::cin, email);
-    std::transform(email.begin(), email.end(), email.begin(),
-                   [](unsigned char c) { return std::tolower(c); });
 
+    std::cout << "Enter customer social security number:";
+    std::cin >> ssn;
 
-    std::cout << "Enter customer social security number: ";
-    while (!(std::cin >> ssn)) {
-        std::cin.clear(); //clear bad input flag
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); //discard input
-        std::cout << "Invalid input; please enter a valid number for social security number: ";
-    }
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // clear the newline character
+    std::cout << "Enter customer phone number:";
+    std::cin >> phoneNumber;
 
-    std::cout << "Enter customer phone number: ";
-    while (!(std::cin >> phoneNumber)) {
-        std::cin.clear(); //clear bad input flag
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); //discard input
-        std::cout << "Invalid input; please enter a valid phone number: ";
-    }
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // clear the newline character
+    std::cout << "Enter customer license number:";
+    std::cin >> licenseNumber;
 
-    std::cout << "Enter customer license number: ";
-    while (!(std::cin >> licenseNumber)) {
-        std::cin.clear(); //clear bad input flag
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); //discard input
-        std::cout << "Invalid input; please enter a valid license number: ";
-    }
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // clear the newline character
-
-    try{
-        // Prepare an SQL statement
-        SQLite::Statement query(db, "INSERT INTO CUSTOMERS (firstName, lastName, address, ssn, phoneNumber, email, licenseNumber, is_example) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-
-        // Bind values to the statement
-        query.bind(1, firstName);
-        query.bind(2, lastName);
-        query.bind(3, address);
-        query.bind(4, ssn);
-        query.bind(5, phoneNumber);
-        query.bind(6, email);
-        query.bind(7, licenseNumber);
-        query.bind(8, 0);
-
-        // Execute the statement
-        query.exec();
-        std::cout << "Customer inserted successfully.\n";
-    } catch (const std::exception& e) {
-        std::cerr << "Failed to insert customer: " << e.what() << std::endl;
-    }
+    auto* customer = new Customer(id, firstName, lastName, address, ssn, phoneNumber, email, licenseNumber);
+    customers.push_back(customer);
 }
 
 void editCustomer(int id){
-    SQLite::Database db("identifier.sqlite", SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
+    for (auto customer : customers) {
+        if (customer->getId() == id) {
+            std::string firstName;
+            std::string lastName;
+            std::string address;
+            int ssn;
+            int phoneNumber;
+            std::string email;
+            int licenseNumber;
 
-    bool continueEditing = true;
-    while (continueEditing) {
-        std::string firstName, lastName, address, email, repeat, thingToEdit;
-        int ssn, phoneNumber, licenseNumber;
-
-        std::cout << "What do you want to edit? (first name, last name, address, email, social security number, phone number, license number): ";
-        std::getline(std::cin, thingToEdit);
-
-        //turn thingsToEdit to lowercase to remove case sensitivity
-        std::transform(thingToEdit.begin(), thingToEdit.end(), thingToEdit.begin(),
-                       [](unsigned char c) { return std::tolower(c); });
-
-        if (thingToEdit == "first name") {
-            std::cout << "Enter new customer first name: ";
+            std::cout << "Enter new customer firstName: ";
+            std::cin.ignore();
             std::getline(std::cin, firstName);
 
-            std::transform(firstName.begin(), firstName.end(), firstName.begin(),
-                           [](unsigned char c) { return std::tolower(c); });
-
-            SQLite::Statement query(db, "UPDATE customers SET FirstName = ? WHERE ID = ?");
-            query.bind(1, firstName);
-            query.bind(2, id);
-
-            // Execute the statement
-            query.exec();
-            std::cout << "First name edited successfully.\n";
-        } else if (thingToEdit == "last name") {
-            std::cout << "Enter new customer last name: ";
+            std::cout << "Enter new customer lastName: ";
             std::getline(std::cin, lastName);
 
-            std::transform(lastName.begin(), lastName.end(), lastName.begin(),
-                           [](unsigned char c) { return std::tolower(c); });
-
-            SQLite::Statement query(db, "UPDATE customers SET LastName = ? WHERE ID = ?");
-            query.bind(1, lastName);
-            query.bind(2, id);
-
-            // Execute the statement
-            query.exec();
-            std::cout << "Last name edited successfully.\n";
-        } else if (thingToEdit == "address") {
             std::cout << "Enter new customer address: ";
             std::getline(std::cin, address);
 
-            std::transform(address.begin(), address.end(), address.begin(),
-                           [](unsigned char c) { return std::tolower(c); });
+            std::cout << "Enter new customer social security number: ";
+            std::cin >> ssn;
 
-            SQLite::Statement query(db, "UPDATE customers SET Address = ? WHERE ID = ?");
-            query.bind(1, address);
-            query.bind(2, id);
+            std::cout << "Enter new customer phone number: ";
+            std::cin >> phoneNumber;
 
-            // Execute the statement
-            query.exec();
-            std::cout << "Address edited successfully.\n";
-        } else if (thingToEdit == "email") {
             std::cout << "Enter new customer email: ";
             std::getline(std::cin, email);
 
-            std::transform(email.begin(), email.end(), email.begin(),
-                           [](unsigned char c) { return std::tolower(c); });
+            std::cout << "Enter new customer license number: ";
+            std::cin >> licenseNumber;
 
-            SQLite::Statement query(db, "UPDATE customers SET Email = ? WHERE ID = ?");
-            query.bind(1, email);
-            query.bind(2, id);
-
-            // Execute the statement
-            query.exec();
-            std::cout << "Email edited successfully.\n";
-        } else if (thingToEdit == "social security number") {
-            std::string input;
-
-            std::cout << "Enter customer social security number: ";
-            std::getline(std::cin, input);
-
-            ssn = std::stoi(input);
-
-            SQLite::Statement query(db, "UPDATE customers SET Ssn = ? WHERE ID = ?");
-            query.bind(1, ssn);
-            query.bind(2, id);
-
-            // Execute the statement
-            query.exec();
-            std::cout << "Social security number edited successfully.\n";
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // clear the newline character
-        } else if (thingToEdit == "phone number") {
-            std::string input;
-
-            std::cout << "Enter customer phone number: ";
-            std::getline(std::cin, input);
-
-            phoneNumber = std::stoi(input);
-
-            SQLite::Statement query(db, "UPDATE customers SET PhoneNumber = ? WHERE ID = ?");
-            query.bind(1, phoneNumber);
-            query.bind(2, id);
-
-            // Execute the statement
-            query.exec();
-            std::cout << "Phone number edited successfully.\n";
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // clear the newline character
-        } else if (thingToEdit == "license number") {
-            std::string input;
-
-            std::cout << "Enter customer license number: ";
-
-            std::getline(std::cin, input);
-
-            licenseNumber = std::stoi(input);
-
-            SQLite::Statement query(db, "UPDATE customers SET LicenseNumber = ? WHERE ID = ?");
-            query.bind(1, licenseNumber);
-            query.bind(2, id);
-
-            // Execute the statement
-            query.exec();
-            std::cout << "License number edited successfully.\n";
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // clear the newline character
-        } else {
-            std::cout << "Invalid input; please enter one of the previously listed options: ";
+            customer->setFirstName(firstName);
+            customer->setLastName(lastName);
+            customer->setAddress(address);
+            customer->setSsn(ssn);
+            customer->setPhoneNumber(phoneNumber);
+            customer->setEmail(email);
+            customer->setLicenseNumber(licenseNumber);
+            break;
         }
-
-        std::cout << "Do you want to edit something else? (yes/no): ";
-        std::getline(std::cin, repeat);
-
-        std::transform(repeat.begin(), repeat.end(), repeat.begin(),
-                       [](unsigned char c) { return std::tolower(c); });
-
-        continueEditing = (repeat == "yes");
     }
 }
 
 void removeCustomer(int id){
-    SQLite::Database db("identifier.sqlite", SQLite::OPEN_READWRITE);
-
-    SQLite::Statement query(db, "DELETE FROM customers WHERE ID = ?");
-    query.bind(1, id);
-    query.exec();
-}
-
-void assignCar(int customerId, int carId){
-    SQLite::Database db("identifier.sqlite", SQLite::OPEN_READWRITE);
-
-    try {
-        SQLite::Statement query(db, "UPDATE cars SET CustomerID = ? WHERE ID = ?");
-        query.bind(1, customerId);
-        query.bind(2, carId);
-        query.exec();
-        std::cout << "Car assigned to customer successfully.\n";
-    } catch (const std::exception& e) {
-        std::cerr << "Error assigning car to customer: " << e.what() << std::endl;
+    for (auto it = customers.begin(); it != customers.end(); ++it) {
+        Customer* customer = *it;
+        if (customer->getId() == id) {
+            customers.erase(it);
+            break;
+        }
     }
 }
 
-//Statistics
-void showStatistics(){
+void printEverything() {
+    for (auto car : cars) {
+        std::cout << "Car id = " << car->getId() << ", " <<
+                  "Model = " << car->getModel() << ", " <<
+                  "Brand = " << car->getBrand() << ", " <<
+                  "Color = " << car->getColor() << ", " <<
+                  "License plate = " << car->getLicensePlate() << ", " <<
+                  "Fuel type = " << car->getFuelType() << ", " <<
+                  "Transmission = " << car->getTransmission() << ", " <<
+                  "Availability = " << car->getAvailability() << ", " <<
+                  "\n";
+        std::cout << "\n";
+    }
+
+    for (auto customer : customers) {
+        std::cout << "Customer id = " << customer->getId() << ", " <<
+                  "First name = " << customer->getFirstName() << ", " <<
+                  "Last name = " << customer->getLastName() << ", " <<
+                  "Address = " << customer->getAddress() << ", " <<
+                  "Ssn = " << customer->getSsn() << ", " <<
+                  "Phone number = " << customer->getPhoneNumber() << ", " <<
+                  "Email = " << customer->getEmail() << ", " <<
+                  "License number = " << customer->getLicenseNumber() <<
+                  "\n";
+        std::cout << "\n";
+    }
+}
+
+void assignCar(int customerId, int carId){
 
 }
 
-
 int main() {
-    // Open a database file
-    SQLite::Database db("identifier.sqlite", SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
+    // Pre-adding two example cars
+    auto* exampleCar1 = new Car(1, "Model S", "Tesla", "Red", "ABC123", "Electric", "Automatic", true);
+    cars.push_back(exampleCar1);
+    nextIdCar++;  // Increment the next ID since we've added a car
+
+    auto* exampleCar2 = new Car(2, "Civic", "Honda", "Blue", "XYZ789", "Gasoline", "Manual", true);
+    cars.push_back(exampleCar2);
+    nextIdCar++;  // Increment the next ID again
+
+    // Pre-adding two example cars
+    auto* exampleCustomer1 = new Customer(1, "Lina", "Habaieb", "Tonnevoldsgate 26", 12345678, 90836743, "linaha@uia.no", 9293878393048);
+    customers.push_back(exampleCustomer1);
+    nextIdCustomer++;  // Increment the next ID since we've added a car
+
+    auto* exampleCustomer2 = new Customer(2, "Thomas", "Hetland", "Tonnevoldsvei 46", 98765432, 45784318, "thomashe@uia.no", 8848392834793);
+    customers.push_back(exampleCustomer2);
+    nextIdCustomer++;  // Increment the next ID again
 
     std::cout << "Please choose:\n"
                  "\n"
@@ -476,8 +260,7 @@ int main() {
                  "\n"
                  "7. Assign car to customer\n"
                  "8. Show all info\n"
-                 "9. Show statistics\n"
-                 "10. Exit" << std::endl;
+                 "9. Exit" << std::endl;
 
     while(true) {
         int number;
@@ -506,36 +289,27 @@ int main() {
             addCustomer();
         }else if(number == 5){
             int chosenId;
-            std::cout << "Choose a customer by typing their id: \n";
+            std::cout << "Choose a customer by typing its id: \n";
             std::cin >> chosenId;
-            //Clear the newline character from the buffer
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
             editCustomer(chosenId);
-
         }else if(number == 6){
             int chosenId;
-            std::cout << "Choose a customer by typing their id: \n";
+            std::cout << "Choose a customer by typing its id: \n";
             std::cin >> chosenId;
             removeCustomer(chosenId);
         }else if(number == 7){
             int customerId;
             int carId;
 
-            std::cout << "Choose a customer by typing their id: \n";
+            std::cout << "Choose a customer by typing its id: \n";
             std::cin >> customerId;
 
             std::cout << "Choose a car by typing its id: \n";
             std::cin >> carId;
             assignCar(customerId, carId);
         }else if(number == 8){
-
+            printEverything();
         }else if(number == 9){
-            showStatistics();
-        }else if(number == 10){
-            db.exec("DELETE FROM cars WHERE is_example = 0 OR is_example IS NULL;");
-            db.exec("DELETE FROM customers WHERE is_example = 0 OR is_example IS NULL;");
-            db.exec("VACUUM"); // Optional: Clean up the database file
             break;
         }
     }

@@ -1,0 +1,6 @@
+cmake-build-debug
+sqlite3ext.h
+shell.c
+identifier.sqlite
+
+.idea
