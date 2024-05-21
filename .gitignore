@@ -4,3 +4,9 @@ shell.c
 
 CMakeLists.txt
 .idea
+
+*.exe
+*.obj
+*.pdb
+*.ilk
+*.lib
